@@ -1,13 +1,5 @@
 #! /bin/bash
 
-#Make sure only root can run it
-if [[ $EUID -ne 0 ]]; then
-	echo "This script must be run as a root" 1>&2
-	exit 1
-else
-
-fi
-
 #Installing required software for our hosting platform.
 function update(){
 
@@ -75,3 +67,15 @@ function mysql_setup(){
 	#Restart the mysql
 	systemctl restart mysql
 }
+
+#Make sure only root can run it
+if [[ $EUID -ne 0 ]]; then
+	echo "This script must be run as a root" 1>&2
+	exit 1
+else
+	update
+	manage_service
+	nginx_conf
+	php_extend
+	mysql_setup
+fi
